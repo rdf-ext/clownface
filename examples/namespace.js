@@ -1,5 +1,5 @@
 const clownface = require('..')
-const namespace = require('@rdfjs/namespace')
+const namespace = require('@rdf-esm/namespace')
 const initExample = require('../test/support/example')
 
 initExample().then(dataset => {
@@ -41,7 +41,7 @@ initExample().then(dataset => {
 
   const neurobiologist = tbbt.has(schema.jobTitle, 'neurobiologist')
 
-  console.log(`people with the job title neurobiologist`)
+  console.log('people with the job title neurobiologist')
   console.log(
     neurobiologist
       .out(schema.givenName)

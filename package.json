@@ -3,12 +3,23 @@
   "version": "1.0.0",
   "description": "Simple but powerful graph traversing library",
   "main": "index.js",
+  "module": "index.mjs",
+  "browser": "index.mjs",
+  "exports": {
+    "require": "./index.js",
+    "import": "./index.mjs"
+  },
   "scripts": {
+    "prepack": "babel lib --out-dir lib --extensions .mjs --out-file-extension .js",
     "pretest": "standard",
-    "test": "nyc mocha",
-    "posttest": "nyc report --reporter=text-lcov > coverage.lcov",
+    "test": "c8 --reporter=lcov mocha test/*.test.mjs test/**/*.test.mjs",
     "docs:serve": "docsify serve docs"
   },
+  "files": [
+    "lib",
+    "index.js",
+    "index.mjs"
+  ],
   "repository": {
     "type": "git",
     "url": "https://github.com/rdf-ext/clownface.git"
@@ -25,34 +36,37 @@
   },
   "homepage": "https://github.com/rdf-ext/clownface",
   "dependencies": {
-    "@rdfjs/data-model": "^1.1.0",
-    "@rdfjs/namespace": "^1.0.0"
+    "@rdf-esm/data-model": "^0.5.3",
+    "@rdf-esm/namespace": "^0.5.1"
   },
   "devDependencies": {
+    "@babel/core": "^7.10.4",
+    "@babel/cli": "^7.10.4",
+    "@babel/preset-env": "^7.10.4",
     "@rdfjs/parser-n3": "^1.1.2",
     "@tpluscode/rdf-ns-builders": "^0.3.6",
-    "@tpluscode/rdf-string": "^0.2.15",
+    "@tpluscode/rdf-string": "^0.2.16",
+    "babel-plugin-add-import-extension": "^1.4.1",
+    "babel-plugin-add-module-exports": "^1.0.2",
+    "c8": "^7.2.1",
     "docsify-cli": "^4.4.0",
     "husky": "^4.2.5",
     "jsdoc-to-markdown": "^5.0.3",
-    "mocha": "^5.2.0",
-    "nyc": "^13.1.0",
+    "mocha": "^8.0.1",
     "rdf-dataset-ext": "^1.0.0",
     "rdf-ext": "^1.3.0",
     "rimraf": "^3.0.2",
     "sinon": "^9.0.2",
-    "standard": "^12.0.1",
+    "standard": "^14.3.4",
     "string-to-stream": "^3.0.1",
     "tbbt-ld": "^1.1.0"
   },
-  "nyc": {
-    "exclude": [
-      "test/*.js"
-    ]
-  },
   "husky": {
     "hooks": {
-      "pre-commit": "jsdoc2md --no-gfm -f index.js lib/* > docs/api.md; git add docs/api.md"
+      "pre-commit": "jsdoc2md -c jsdoc.conf.json --no-gfm -f index.mjs lib/*.mjs > docs/api.md; git add docs/api.md"
     }
+  },
+  "engines": {
+    "node": ">=12"
   }
 }

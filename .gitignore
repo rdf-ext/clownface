@@ -3,6 +3,6 @@ node_modules
 test/support/browser-test.js
 test/support/mocha.css
 test/support/mocha.js
-.nyc_output
-coverage.lcov
+coverage/
 docs/api/
+lib/*.js

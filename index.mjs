@@ -1,4 +1,8 @@
-const { Clownface } = require('./lib/Clownface.js')
+/**
+ * @module index
+ */
+
+import { Clownface } from './lib/Clownface.mjs'
 
 /**
  * Factory to create graph pointer objects
@@ -12,8 +16,6 @@ const { Clownface } = require('./lib/Clownface.js')
  * @param {Context} [init._context] an existing clownface context. takes precedence before other params
  * @returns {Clownface}
  */
-function factory ({ dataset, graph, term, value, factory, _context }) {
+export default function factory ({ dataset, graph, term, value, factory, _context }) {
   return new Clownface({ dataset, graph, term, value, factory, _context })
 }
-
-module.exports = factory
