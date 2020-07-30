@@ -6,6 +6,7 @@
   "scripts": {
     "pretest": "standard",
     "test": "nyc mocha",
+    "prepublishOnly": "changeset version; git add -A; git ci -m\"chore: new version\"",
     "posttest": "nyc report --reporter=text-lcov > coverage.lcov",
     "docs:serve": "docsify serve docs"
   },
@@ -32,6 +33,7 @@
     "@rdfjs/parser-n3": "^1.1.2",
     "@tpluscode/rdf-ns-builders": "^0.3.6",
     "@tpluscode/rdf-string": "^0.2.15",
+    "@changesets/cli": "^2.9.2",
     "docsify-cli": "^4.4.0",
     "husky": "^4.2.5",
     "jsdoc-to-markdown": "^5.0.3",

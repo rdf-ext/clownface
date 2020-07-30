@@ -15,11 +15,11 @@ The plural `terms` and `values` always return an array of objects, or an empty a
 
 As presented in the [getting started](/) and [deep dive](deep-dive.md) examples, a clownface instance is initially created using a factory function exported by the module. Depending on the parameters passed to it, various contexts can be created.
 
-### Empty initial context
+### Any pointer
 
-An empty context is created by providing only a `dataset` parameter.
+By providing only a `dataset` parameter to the clownface factory, an "Any pointer" is created.
 
-This state is quite unique, because this is the only circumstance in which a context will be empty. The moment any node gets pointed, the context will never return to this state.
+This state is quite unique, because this is the only circumstance in which a context will be empty. In other words, in this state, the pointer does not really point at any node within the dataset. Similar to a Null Pointer in some programming languages.
 
 <run-kit>
 
@@ -28,16 +28,15 @@ const cf = require('clownface')
 const rdf = require('@rdfjs/dataset')
 
 // only dataset is a required parameter
-const graphPointer = cf({ dataset: rdf.dataset() })
+const anyPointer = cf({ dataset: rdf.dataset() })
+
+const { term, value, terms, values } = anyPointer
 
 // term/value are undefined
+console.log(`Term: ${term}; Value: ${value}`)
+
 // terms/values are empty arrays
-const context = {
-  term: graphPointer.term,
-  value: graphPointer.value,
-  terms: graphPointer.terms,
-  values: graphPointer.values
-}
+console.log(`Terms: ${terms}; Values: ${values}`)
 ```
 
 </run-kit>
@@ -68,9 +67,13 @@ const context = {
 
 </run-kit>
 
-### Multiple pointers
+### Multi-pointer
 
-The context can represent a single graph pointer, that is a single node in the graph.
+A pointer object can also point at multiple nodes at the same time. Those nodes could be in different named graphs or even different datset.
+
+We refer to it as "multi-pointer".
+
+It is probably the most common kind of pointer you will work with as values returned from most methods `.in()`, `.out()` and `.has()` are potentially multi-pointers.
 
 <run-kit>
 
@@ -93,6 +96,8 @@ const context = {
 ```
 
 </run-kit>
+
+To ensure individual graph pointers, one can call `.toArray()`. Also the callbacks to `.forEach` and `.map()` methods will always invoked on singular graph pointers even if the original instance is a multi-pointer.
 
 ## Switching context
 
@@ -140,3 +145,36 @@ const contexts = {
 </run-kit>
 
 Each one of those methods also accept RDF/JS terms and instances of `Clownface` itself as well as array to create a multiple pointer context. Do refer to [the API page](api.md) for details about their parameters.
+
+## Returning to any pointer
+
+?> From v1.1
+
+Given a singular graph pointer or a multi-pointer it is possible to reject the pointed nodes to return to the initial state.
+
+<run-kit>
+
+```js
+const cf = require('clownface')
+const rdf = require('@rdfjs/dataset')
+const namespace = require('@rdfjs/namespace')
+const { xsd } = require('@tpluscode/rdf-ns-builders')
+
+const ex = namespace('http://example.com/')
+
+const graphPointer = cf({ dataset: rdf.dataset(), term: ex.foo })
+
+const { term, terms, value, values } = graphPointer.any()
+
+// term/value are again undefined
+console.log(`Term: ${term}; Value: ${value}`)
+
+// terms/values are again empty arrays
+console.log(`Terms: ${terms}; Values: ${values}`)
+```
+
+</run-kit>
+
+> Of course data is not changed by this method.
+>
+> Also the original pointer is not modified.
