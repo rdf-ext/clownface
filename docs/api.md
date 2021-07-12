@@ -504,7 +504,7 @@ Factory to create graph pointer objects
     <td>[init.factory]</td><td><code>DataFactory</code></td><td><code>@rdfjs/data-model</code></td><td><p>an RDF/JS factory which will be used to create nodes</p>
 </td>
     </tr><tr>
-    <td>[init._context]</td><td><code>Context</code></td><td></td><td><p>an existing clownface context. takes precedence before other params</p>
+    <td>[init._context]</td><td><code>Context</code> | <code>Array.&lt;Context&gt;</code></td><td></td><td><p>an existing clownface context. takes precedence before other params</p>
 </td>
     </tr>  </tbody>
 </table>
